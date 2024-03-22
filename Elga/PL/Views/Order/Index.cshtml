@@ -1,0 +1,43 @@
+﻿@model List<FashionApp.DAL.Entities.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>My Orders</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Total Price
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                 Product
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                <ol>
+                    @foreach(var orderItem in item.OrderItems)
+                    {
+                        <li>@orderItem.Product.Title</li>
+                    }
+                </ol>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<FashionApp.BLL.DTO.Favourite>
+
+@{
+    ViewData["Title"] = "Index";
+    var i = 1;
+}
+
+<h1>Favourites List</h1>
+
+<table class="table" id="favTable">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    <img src="@Url.Content("~/images/" + item.Product.ImagePath)" style="width: 100px;height: 100px;object-fit: contain;">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Title)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Price) EUR
+                </td>
+            <td>
+                @Html.ActionLink("Details", "Details", "Product", new {  id=item.ProductId  },  new {@class = "btn btn-primary" }) |
+                <a href="#" class="btn btn-danger" id="remove-btn" data-product-id="@item.ProductId"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#favTable').DataTable();
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#remove-btn").on("click", function () {
+            var prodId = $(this).data("product-id");//ruan id e produktit
+            var tr = $(this).closest("tr");
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Delete", "Favourite")?id=' + prodId,
+                dataType: 'json',
+                success: function (response) {
+                    debugger;
+                    if (response.status === "completed") {
+                        tr.hide();
+                    }
+                },
+                error: function (response) {
+                    debugger;
+                },
+            });
+        });
+    });
+</script>
+

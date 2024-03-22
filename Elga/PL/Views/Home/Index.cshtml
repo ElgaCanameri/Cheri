@@ -1,0 +1,53 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="~/css/style.css">
+	<title>Fashion</title>
+</head>
+<body>
+	@*<div class="navbar">
+		<div class="container">
+			<div class="logo">
+				<img src="logo.png">
+			</div>
+			@*<div class="nav-links">
+				<a href="#">HOME</a>
+				<a href="#">PRODUCTS</a>
+				<a href="#">ABOUT US</a>
+			</div>
+		</div>
+	</div>*@
+
+	<div class="section">
+		<div class="left">
+			<h1>CLOTHES</h1>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, voluptatibus</p>
+			<a asp-area="" asp-controller="Product" asp-action="Index">SHOW MORE</a>
+		</div>
+		<div class="right">
+			<h1>ACCESSORIES</h1>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, rem?</p>
+			<a asp-area="" asp-controller="Product" asp-action="Index">SHOW MORE</a>
+		</div>
+	</div>
+	<script>
+		document.getElementsByClassName("container")[0].classList.remove("container");
+	</script>
+
+</body>
+</html>
+
+

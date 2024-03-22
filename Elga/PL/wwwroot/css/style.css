@@ -1,0 +1,103 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, Arial;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+img {
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+}
+
+    .navbar .container {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+
+        .navbar .container .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .container img {
+            height: 100px;
+            width: 100px;
+            object-fit: contain;
+        }
+
+       /* .navbar .container .nav-links {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+            .navbar .container .nav-links a {
+                color: white;
+                margin-left: 5rem;
+            }
+
+                .navbar .container .nav-links a:hover {
+                    opacity: 0.8;
+                }*/
+
+.section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100vh;
+}
+
+    .section .left, .section .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .section .left {
+        background: linear-gradient(0deg, rgba(35, 35, 35, 0.3), rgba(72, 72, 72, 0.8)), url('../images/left.jpg');
+        background-position: top 40%;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .section .right {
+        background: linear-gradient(0deg, rgba(35, 35, 35, 0.3), rgba(72, 72, 72, 0.8)), url('../images/right.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .section h1 {
+        font-size: 3rem;
+    }
+
+    .section p {
+        margin: 2rem 0 1rem 0;
+    }
+
+    .section a {
+        color: white;
+        border: white 1px solid;
+        padding: 10px 20px;
+    }
+
+        .section a:hover {
+            background-color: white;
+            color: gray;
+        }
+

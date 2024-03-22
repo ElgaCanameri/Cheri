@@ -1,0 +1,91 @@
+﻿*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, Arial;
+}
+
+body{
+/*    height: 100vh;
+*/}
+
+img{
+    width: 100%;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+.container{
+    width: 80%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.content{
+    margin: 5rem 0;
+    height: 400px;
+    width: 100%;
+}
+
+.content .container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.content .details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content .image{
+    background-image: url("trousers.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.content .details h1{
+    font-size: 2.5rem;
+}
+
+.content .details p{
+    margin: 0.5rem 0 2rem 0;
+    color: gray;
+}
+
+.price{
+    text-align: right;
+    font-size: 1.5rem;
+}
+
+.content .details .btns{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.content .details .btns a:first-child{
+    background-color: rgb(67, 78, 133);
+    padding: 1rem 0;
+}
+
+.content .details .btns a:last-child{
+    background-color: rgb(133, 67, 133);
+    padding: 1rem 0;
+}
+
+.btns i{
+    margin-right: 10px;
+}
+
+.content .details .btns a:hover{
+    opacity: 0.8;
+}
+

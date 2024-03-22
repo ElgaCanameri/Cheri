@@ -1,0 +1,144 @@
+﻿@model IEnumerable<FashionApp.DAL.Entities.CartProduct>
+
+@{
+    ViewData["Title"] = "Index";
+    decimal totalPrice = 0;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap.min.css" integrity="sha512-BMbq2It2D3J17/C7aRklzOODG1IQ3+MHw3ifzBHMBwGO/0yUqYmsStgBjI0z5EYlaDEFnvYV7gNYdD3vFLRKsA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<table class="table" id="cartTable">
+    <thead>
+		<tr>
+			<th></th>
+            <th>
+                Product
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            totalPrice += item.Product.Price * item.Quantity;
+            <tr>
+            <td>
+                    <img src="@Url.Content("~/images/" + item.Product.ImagePath)" style="width: 100px;height: 100px;object-fit: contain;">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Title)
+            </td>
+            
+            <td>
+                    <span id="productPrice" >@Html.DisplayFor(modelItem => item.Product.Price)</span> EUR
+            </td>
+            <td>
+                    <a href="#" class="qty-btn qtyPlus btn btn-secondary" data-product-id="@item.ProductId">+</a> <span class="qty">@Html.DisplayFor(modelItem => item.Quantity)</span> <a href="#" class="qty-btn qtyMinus btn btn-secondary" data-product-id="@item.ProductId">-</a>
+            </td>
+            <td>
+                    <a href="#" class="btn btn-danger" id="remove-btn" data-product-id="@item.ProductId"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<h3>Your total is: <span id="totalPrice">@totalPrice</span></h3>
+
+<form asp-action="CreateCheckoutSession">
+    <input type="hidden" id="totalPriceInput" name="amount" value="@totalPrice" />
+    <button class="btn btn-primary" type ="submit">Checkout</button>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $("#remove-btn").on("click", function () {
+            var prodId = $(this).data("product-id");//ruan id e produktit
+            var tr = $(this).closest("tr");
+            let prodPrice = parseFloat(tr.find("#productPrice").text());
+            let prodQty = parseFloat(tr.find(".qty").text());
+            var totalPriceInput = $("#totalPriceInput");
+            var totalPrice = $("#totalPrice");
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Delete", "Cart")?id=' + prodId,
+                dataType: 'json',
+                success: function (response) {
+                    debugger;
+                    if (response.status === "completed") {
+                        tr.hide();
+                    }
+                    let tp = parseFloat($("#totalPrice").text()) - (prodPrice * prodQty);
+                    totalPrice.text(tp);
+                    totalPriceInput.val(tp);
+                },
+                error: function (response) {
+                    debugger;
+                },
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#cartTable').DataTable();
+    });
+</script>
+
+<script>
+    //gjen
+    $(document).ready(function () {
+        $(".qty-btn").on("click", function () {//qty-btn i referohet butonit plus ose minus
+            debugger;
+            var quantityElement = $(this).closest("td").find(".qty");
+            var quantity = quantityElement.text();
+            var prodId = $(this).data("product-id");//ruan id e produktit
+            var clicked = $(this).text();//i referohet qty-btn
+            var totalPrice = $("#totalPrice");
+            var prodPrice = $(this).closest("tr").find("#productPrice");//futet te a href closest kap td find kap cmimin
+            var totalPriceInput = $("#totalPriceInput");
+            if(clicked === "+"){
+                clicked = "plus";
+            }
+            else{
+                clicked = "minus"
+            }
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("UpdateCart", "Cart")?quantity=' + quantity + "&prodId=" + prodId + "&op=" + clicked,
+                dataType: 'json',
+                success: function (response) {
+                    debugger;
+                    if (response.status === "completed") {
+                        var quantityInt = parseInt(quantity, 10); // Parse the string to an integer with base 10
+                        if(clicked === "plus"){
+                            quantityInt += 1; // Increment the quantity
+                            let tp = (parseFloat(totalPrice.text()) + parseFloat(prodPrice.text())).toString();
+                            totalPrice.text(tp);
+                            totalPriceInput.val(tp);
+                        }
+                        else if(clicked === "minus"){
+                            if(quantity > 1){
+                                quantityInt -= 1; // Decrement the quantity
+                                totalPrice.text((parseFloat(totalPrice.text()) - parseFloat(prodPrice.text())).toString());
+                            }
+                        }
+                        quantityElement.text(quantityInt.toString());
+                    }
+                },
+                error: function (response) {
+                    debugger;
+                },
+            });
+        });
+    });
+</script>

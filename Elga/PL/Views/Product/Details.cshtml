@@ -1,0 +1,80 @@
+﻿@using System.Web;
+@model FashionApp.BLL.DTO.Responses.ProductDetailsModel;
+@{
+	ViewData["Title"] = "Details";
+}
+
+<div class="content">
+	<div class="container">
+		<div class="image" style="background-image: url(@Url.Content("~/images/" + @Model.ImagePath))"></div>
+		<div class="details">
+			<h1>@Html.DisplayFor(model => model.Title)</h1>
+			<p>@Html.DisplayFor(model => model.Description)</p>
+			<div class="price">@Html.DisplayFor(model => model.Price) EUR</div>
+			<div class="btns">
+				<a href="#" style="color: white; text-shadow: 0 0 3px red" id="favourites-btn"><i class="fa-solid fa-heart"></i>Add to Favourites</a>
+				<a href="#" style="color: white; text-shadow: 0 0 3px blue" id="cart-btn"><i class="fa-solid fa-cart-shopping"></i>Add to Cart</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+	$(document).ready(function () {
+		$("#favourites-btn").on("click", function () {
+			debugger;
+			$.ajax({
+				type: 'GET',
+				url: '@Url.Action("Create", "Favourite")?id=' + @Model.Id,
+				dataType: 'json',
+				success: function (response) {
+					debugger;
+					if (response.status === "completed" && response.message === "added") {
+						$("#favourites-btn").css("color", "red");
+					}
+					else if (response.status === "completed" && response.message === "deleted") {
+						$("#favourites-btn").css({
+							"color": "white",
+							"text-shadow": "0 0 3px red"
+						});
+					}
+
+				},
+				error: function (response) {
+					debugger;
+				},
+			});
+		});
+		$("#cart-btn").on("click", function () {
+			debugger;
+			$.ajax({
+				type: 'GET',
+				url: '@Url.Action("Create", "Cart")?id=' + @Model.Id,
+				dataType: 'json',
+				success: function (response) {
+					debugger;
+					if (response.status === "completed" && response.message === "added") {
+						$("#cart-btn").css("color", "blue");
+					}
+					else if (response.status === "completed" && response.message === "deleted") {
+						$("#cart-btn").css({
+							"color": "white",
+							"text-shadow": "0 0 3px red"
+						});
+					}
+
+				},
+				error: function (response) {
+					debugger;
+				},
+			});
+		});
+
+	});
+</script>
